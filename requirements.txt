@@ -1,0 +1,9 @@
+numpy
+torch>=2.2
+hydra-core>=1.3
+omegaconf
+wandb
+
+# Data collection only. procgen ships wheels for python<=3.10 on x86_64 —
+# run collection on the cluster (or under Rosetta), not Apple Silicon.
+# procgen

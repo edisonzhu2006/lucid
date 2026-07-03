@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# data & experiment outputs
+datasets/
+results/
+wandb/
+checkpoints/
+*.ckpt
+
+# hydra run dirs
+outputs/
+multirun/
+
+.DS_Store

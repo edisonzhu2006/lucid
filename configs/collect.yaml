@@ -1,0 +1,19 @@
+env_name: coinrun
+num_envs: 64
+distribution_mode: hard
+num_levels: 0 # 0 = unlimited procedural levels
+start_level: 0
+total_steps: 1000000 # total env steps across all envs (= frames collected)
+chunk_len: 1000 # steps per env per shard file
+compress: false # savez_compressed halves disk, slows streaming
+out_dir: datasets/coinrun/train
+seed: 0
+
+# random + lightly-scripted policy: mostly run right, jump often
+policy:
+  p_right: 0.45
+  p_right_jump: 0.20
+  p_jump: 0.05
+  p_left: 0.05
+  p_noop: 0.05
+  p_random: 0.20 # uniform over all 15 procgen actions
