@@ -1,0 +1,37 @@
+data_dir: datasets/coinrun/train
+data_dir_heldout: datasets/coinrun/heldout # true rewards live here (eval only)
+out_dir: results/agent
+tokenizer_ckpt: results/tokenizer/tokenizer.pt
+lam_ckpt: results/latent_action/latent_action.pt
+dynamics_ckpt: results/dynamics/dynamics.pt
+
+reward:
+  steps: 20000
+  lr: 3.0e-4
+  batch_size: 256
+
+agent:
+  dim: 256
+  state_dim: 512
+  hidden: 512
+
+imagination:
+  steps: 50000
+  batch_size: 32
+  horizon: 15
+  gamma: 0.985
+  lambda: 0.95
+  entropy_coef: 3.0e-3
+  actor_lr: 3.0e-5
+  critic_lr: 3.0e-5
+  target_decay: 0.98
+  decode_steps: 4 # fewer MaskGIT iterations in imagination — speed matters
+
+num_workers: 8
+log_every: 100
+ckpt_every: 2000
+seed: 0
+
+wandb:
+  project: lucid
+  mode: disabled
