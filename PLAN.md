@@ -1,7 +1,7 @@
 # World Model — Implementation Plan
 
 **Project:** Playable Genie-style video world model + an agent trained *inside* it, evaluated back in the real game.
-**Domain:** CoinRun (OpenAI Procgen).
+**Domain:** CoinRun (OpenAI Procgen) for the build; a fresh Stable-Retro title for the showcase (see *Two-game staging*).
 **Compute:** Multi-node GPU cluster.
 
 ---
@@ -28,7 +28,13 @@ That headline — real-game score from a policy that never trained on the real g
 
 ## Why CoinRun
 
-2D platformer (Genie's proven domain), procedurally generated so training video is unlimited and cheap, tiny discrete action space (left / right / jump) that makes latent-action verification easy, and it renders fast for both data collection and the live loop. Fallback to **Sokoban** if visual variety fights you; save a retro NES title (via Stable-Retro) for a flashier final demo.
+2D platformer (Genie's proven domain), procedurally generated so training video is unlimited and cheap, tiny discrete action space (left / right / jump) that makes latent-action verification easy, and it renders fast for both data collection and the live loop. Fallback to **Sokoban** if visual variety fights you.
+
+## Two-game staging
+
+Build and debug the entire pipeline on CoinRun; when the full loop works, swap the **game, not the code**, for the headline result. Only `data/collect.py` and `eval/real_game_eval.py` touch the environment, so the swap is cheap. Every failure during the build happens on a domain where it's diagnosable (unlimited procedural data, 3 actions, known baselines) — never debug a new pipeline on a new domain.
+
+The showcase domain is a **Stable-Retro title no world-model paper has used** — candidates: *Kirby's Adventure*, *Gradius*, *Castlevania* (NES); *Airstriker-Genesis* is the legally-cleanest fallback (free homebrew ROM bundled with stable-retro). Stable-Retro provides RAM-based reward functions for the real-game evaluation. Nearest prior art on Procgen is LAPO (latent-action policies from video, ICLR 2024), so a fresh showcase domain also differentiates the final result.
 
 ---
 
@@ -73,6 +79,11 @@ Never debug stage N by retraining stage N-1. Get one vertical slice working on a
 - Swap transformer dynamics → DIAMOND-style diffusion dynamics. Compare on FVD, long-horizon drift, and downstream agent score.
 - One clean axis, honest numbers, confidence intervals over ≥3 seeds.
 
+### Stage 7 — Domain swap (the showcase)
+- Re-run Stages 0–5 on the chosen Stable-Retro title: new collection wrapper + RAM-based reward for evaluation; everything else unchanged.
+- Known risks vs CoinRun: one game's worth of levels (less visual variety), scrolling/parallax strains the tokenizer, and ~8–12 effective button combos strain the tiny latent-action codebook — grow the codebook before growing the model.
+- **Gate:** the full loop — playable model + imagination-trained agent beating random — reproduced on the new game.
+
 ---
 
 ## Metrics
@@ -86,11 +97,11 @@ Never debug stage N by retraining stage N-1. Get one vertical slice working on a
 ## Repo structure
 
 ```
-world-model/
+lucid/
 ├── README.md                 # question, method, results, GIFs up top
 ├── configs/                  # one config per experiment cell (Hydra)
 ├── data/
-│   ├── collect.py            # CoinRun rollout collection
+│   ├── collect.py            # env rollout collection (CoinRun; later Stable-Retro)
 │   └── datamodule.py
 ├── models/
 │   ├── tokenizer.py          # FSQ
@@ -126,6 +137,7 @@ world-model/
 | 4 | Interactive play loop + GIFs |
 | 5 | Reward head + DreamerV3 agent trained in imagination; beats random in real CoinRun |
 | 6 | Ablations (diffusion dynamics, model-quality vs agent-score), write-up, README |
+| 7 | Domain swap: reproduce the full loop on the Stable-Retro showcase title |
 
 ---
 

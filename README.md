@@ -12,5 +12,9 @@ policy learned in imagination transfers to reality.
 The headline result this project builds to: **a real-game score from an agent
 that never trained on the real game.**
 
+The pipeline is built and debugged on CoinRun, then re-run unchanged on a
+fresh Stable-Retro title no world-model paper has used for the showcase
+result.
+
 See [PLAN.md](PLAN.md) for the full implementation plan: build stages and
 gates, metrics, repo structure, timeline, and de-risking.
