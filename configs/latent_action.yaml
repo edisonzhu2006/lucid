@@ -1,0 +1,23 @@
+data_dir: datasets/coinrun/train
+out_dir: results/latent_action
+
+model:
+  num_codes: 8 # tiny on purpose — the bottleneck IS the method
+  code_dim: 32
+  base_ch: 64
+
+batch_size: 128
+num_workers: 8
+steps: 100000
+lr: 3.0e-4
+weight_decay: 0.01
+grad_clip: 1.0
+
+log_every: 100
+sweep_every: 2000 # save the code-sweep figure (the Stage-2 gate)
+ckpt_every: 5000
+seed: 0
+
+wandb:
+  project: lucid
+  mode: disabled
