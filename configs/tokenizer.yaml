@@ -1,0 +1,22 @@
+data_dir: datasets/coinrun/train
+out_dir: results/tokenizer
+
+model:
+  levels: [8, 6, 5] # 240-code vocabulary
+  base_ch: 64
+
+batch_size: 256
+num_workers: 8
+steps: 200000
+lr: 3.0e-4
+weight_decay: 0.01
+grad_clip: 1.0
+
+log_every: 100
+sample_every: 2000 # save a reconstruction grid (the Stage-1 gate is visual)
+ckpt_every: 5000
+seed: 0
+
+wandb:
+  project: lucid
+  mode: disabled # set to online on the cluster
