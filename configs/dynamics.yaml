@@ -1,0 +1,31 @@
+data_dir: datasets/coinrun/train
+out_dir: results/dynamics
+tokenizer_ckpt: results/tokenizer/tokenizer.pt
+lam_ckpt: results/latent_action/latent_action.pt
+
+model:
+  context_frames: 8
+  dim: 512
+  depth: 8
+  heads: 8
+  dropout: 0.0
+
+batch_size: 64
+num_workers: 8
+steps: 300000
+lr: 3.0e-4
+weight_decay: 0.01
+grad_clip: 1.0
+warmup_steps: 2000
+
+decode_steps: 8 # MaskGIT iterations per generated frame
+
+log_every: 100
+rollout_every: 5000 # save a rollout strip (the Stage-3 gate is coherence)
+rollout_horizon: 24
+ckpt_every: 5000
+seed: 0
+
+wandb:
+  project: lucid
+  mode: disabled
