@@ -1,0 +1,29 @@
+data_dir: datasets/coinrun/train
+out_dir: results/dynamics_diffusion
+lam_ckpt: results/latent_action/latent_action.pt
+
+model:
+  context_frames: 4
+  base_ch: 64
+  mults: [1, 2, 4]
+  emb_dim: 256
+
+batch_size: 64
+num_workers: 8
+steps: 300000
+lr: 1.0e-4
+weight_decay: 0.01
+grad_clip: 1.0
+warmup_steps: 2000
+
+sample_steps: 3 # DIAMOND-style few-step Euler sampling
+
+log_every: 100
+rollout_every: 5000
+rollout_horizon: 24
+ckpt_every: 5000
+seed: 0
+
+wandb:
+  project: lucid
+  mode: disabled
